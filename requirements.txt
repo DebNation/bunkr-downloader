@@ -1,0 +1,4 @@
+python-dotenv==1.1.1
+Requests==2.32.5
+telethon==1.41.2
+tqdm==4.67.1
