@@ -10,14 +10,14 @@ def download_file_with_progress(url, filename):
 
     headers = {
         "Referer": "https://bunkr.cr/",
-        "User-Agent": "Wget/1.21.3 (linux-gnu)",  # mimic wget
+        "User-Agent": "Wget/1.21.3 (linux-gnu)",
         "Accept": "*/*",
-        "Accept-Encoding": "identity",  # prevent gzip messing with content-length
+        "Accept-Encoding": "identity",
         "Connection": "keep-alive",
     }
     response = requests.get(url, headers=headers, stream=True)
     total_size_in_bytes = int(response.headers.get("content-length", 0))
-    block_size = 1024  # 1 Kibibyte
+    block_size = 1024
 
     progress_bar = tqdm(total=total_size_in_bytes, unit="iB", unit_scale=True)
     with open(file_path, "wb") as file:
