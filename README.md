@@ -1,6 +1,6 @@
 # Bunkr Downloader
-
-A Python-based downloader tool for processing URLs from bunkr.
+A simple cli tool to download content from Bunkr.
+- Please do not abuse the service.
 
 ## Prerequisites
 
