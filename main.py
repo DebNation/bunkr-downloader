@@ -17,10 +17,12 @@ def album_scraper(url):
 
 
 with open("URLS.txt", "r") as file:
+    contents = file.read()
+    if not contents:
+        print("No URL given!")
     for line in file:
         url = line.strip()
         if url == "":
-            print("No URL given!")
             continue
         if "/a/" in url:
             urls = album_scraper(url)
