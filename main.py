@@ -16,32 +16,45 @@ def album_scraper(url):
         return filter_urls
 
 
-with open("URLS.txt", "r") as file:
-    contents = file.read()
-    if not contents:
-        print("No URL given!")
-    for line in file:
-        url = line.strip()
-        if url == "":
-            continue
-        if "/a/" in url:
-            urls = album_scraper(url)
-            if isinstance(urls, list) and len(urls) > 0:
-                for url in urls:
-                    decoded_url = urllib.parse.unquote(url)
-                    result = subprocess.run(
-                        ["node", "index.js", decoded_url],
-                        capture_output=True,
-                        text=True,
-                    )
-                    filename = result.stdout.split("=")[-1].strip()
-                    decoded_filename = urllib.parse.unquote(filename)
-                    download_file_with_progress(result.stdout.strip(), decoded_filename)
-                    continue
-        decoded_url = urllib.parse.unquote(url)
-        result = subprocess.run(
-            ["node", "index.js", decoded_url], capture_output=True, text=True
-        )
-        filename = result.stdout.split("=")[-1].strip()
-        decoded_filename = urllib.parse.unquote(filename)
-        download_file_with_progress(result.stdout.strip(), decoded_filename)
+def main():
+    with open("URLS.txt", "r") as file:
+        contents = file.read().strip()
+        if not contents:
+            print("No urls found in URLS.txt")
+            return 1
+        for line in contents.splitlines():
+            url = line.strip()
+            if url == "":
+                continue
+            if not "bunkr" in url:
+                print("Unexpected url given")
+                continue
+            if "https://" not in url:
+                url = "https://" + url
+            if "/a/" in url:
+                urls = album_scraper(url)
+                if isinstance(urls, list) and len(urls) > 0:
+                    for url in urls:
+                        decoded_url = urllib.parse.unquote(url)
+                        result = subprocess.run(
+                            ["node", "index.js", decoded_url],
+                            capture_output=True,
+                            text=True,
+                        )
+                        filename = result.stdout.split("=")[-1].strip()
+                        decoded_filename = urllib.parse.unquote(filename)
+                        download_file_with_progress(
+                            result.stdout.strip(), decoded_filename
+                        )
+                        continue
+            decoded_url = urllib.parse.unquote(url)
+            result = subprocess.run(
+                ["node", "index.js", decoded_url], capture_output=True, text=True
+            )
+            print(result)
+            filename = result.stdout.split("=")[-1].strip()
+            decoded_filename = urllib.parse.unquote(filename)
+            download_file_with_progress(result.stdout.strip(), decoded_filename)
+
+
+main()
