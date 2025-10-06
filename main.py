@@ -51,7 +51,6 @@ def main():
             result = subprocess.run(
                 ["node", "index.js", decoded_url], capture_output=True, text=True
             )
-            print(result)
             filename = result.stdout.split("=")[-1].strip()
             decoded_filename = urllib.parse.unquote(filename)
             download_file_with_progress(result.stdout.strip(), decoded_filename)
