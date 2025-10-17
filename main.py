@@ -2,7 +2,7 @@ import subprocess
 import urllib.parse
 
 import requests
-from downloader import download_file_with_progress
+from downloader import download_file_with_progress, initiate_download
 from bs4 import BeautifulSoup
 
 
@@ -32,6 +32,7 @@ def main():
             if "https://" not in url:
                 url = "https://" + url
             if "/a/" in url:
+                album_id = url.split("/a/").pop()
                 urls = album_scraper(url)
                 if isinstance(urls, list) and len(urls) > 0:
                     for url in urls:
@@ -43,8 +44,8 @@ def main():
                         )
                         filename = result.stdout.split("=")[-1].strip()
                         decoded_filename = urllib.parse.unquote(filename)
-                        download_file_with_progress(
-                            result.stdout.strip(), decoded_filename
+                        initiate_download(
+                            result.stdout.strip(), decoded_filename, album_id=album_id
                         )
                         continue
             decoded_url = urllib.parse.unquote(url)
@@ -53,7 +54,8 @@ def main():
             )
             filename = result.stdout.split("=")[-1].strip()
             decoded_filename = urllib.parse.unquote(filename)
-            download_file_with_progress(result.stdout.strip(), decoded_filename)
+
+            initiate_download(result.stdout.strip(), decoded_filename, album_id="")
 
 
 main()
