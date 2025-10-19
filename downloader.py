@@ -10,13 +10,15 @@ def initiate_download(url, filename, album_id):
         album_download_path = os.path.join(download_dir, album_id)
         os.makedirs(album_download_path, exist_ok=True)
         file_path = os.path.join(album_download_path, filename)
-        download_file_with_progress(url, file_path, filename)
+        if not os.path.exists(file_path):
+            download_file_with_progress(url, file_path, filename)
 
     else:
         download_dir = "Downloads"
         os.makedirs(download_dir, exist_ok=True)
         file_path = os.path.join(download_dir, filename)
-        download_file_with_progress(url, file_path, filename)
+        if not os.path.exists(file_path):
+            download_file_with_progress(url, file_path, filename)
 
 
 def download_file_with_progress(url, download_path, filename):

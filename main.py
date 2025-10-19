@@ -2,18 +2,51 @@ import subprocess
 import urllib.parse
 
 import requests
-from downloader import download_file_with_progress, initiate_download
+from downloader import initiate_download
 from bs4 import BeautifulSoup
+import re
+import math
 
 
 def album_scraper(url):
-    response = requests.get(url)
+    response = requests.get(url + "?advanced=1")
+    pageCount = 0
     if response.status_code == 200:
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
-        hrefs = [a.get("href") for a in soup.find_all("a", href=True)]  # type: ignore
-        filter_urls = ["https://bunkr.cr" + str(i) for i in hrefs if "/f/" in str(i)]
-        return filter_urls
+        text = soup.find(string=re.compile(r"Files"))
+        if text:
+            match = re.search(r"(\d+)\s+Files", str(text))
+            if match:
+                file_count = int(match.group(1))
+                if file_count > 100:
+                    pageCount = math.ceil(file_count / 100)
+    if pageCount > 0:
+        print("Loading...Hold..up..")
+        finalUrlsArr = []
+        for page in range(pageCount):
+            response = requests.get(url + f"?page={page}")
+            if response.status_code == 200:
+                html_content = response.text
+                soup = BeautifulSoup(html_content, "html.parser")
+                text = soup.find(string=re.compile(r"Files"))
+                hrefs = [a.get("href") for a in soup.find_all("a", href=True)]  # type: ignore
+                filter_urls = [
+                    "https://bunkr.cr" + str(i) for i in hrefs if "/f/" in str(i)
+                ]
+                finalUrlsArr = [*finalUrlsArr, *filter_urls]
+        return finalUrlsArr
+    else:
+        response = requests.get(url)
+        if response.status_code == 200:
+            html_content = response.text
+            soup = BeautifulSoup(html_content, "html.parser")
+            text = soup.find(string=re.compile(r"Files"))
+            hrefs = [a.get("href") for a in soup.find_all("a", href=True)]  # type: ignore
+            filter_urls = [
+                "https://bunkr.cr" + str(i) for i in hrefs if "/f/" in str(i)
+            ]
+            return filter_urls
 
 
 def main():

@@ -1,8 +1,3 @@
-// const data = {
-//   encrypted: true,
-//   timestamp: 1758629240,
-//   url: "OzE3IjZucGQnPDpGFlpAXlMhazEnajU7KSRub1EBFQAGXmpod2pzbXIpJGA9GQ0MDVFdMScgZHBlZmUoKWs="
-// };
 async function main() {
   const args = process.argv.slice(2);
   let url = args[0]; 
