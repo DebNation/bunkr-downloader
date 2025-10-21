@@ -2,7 +2,7 @@
 
 A simple cli tool to download content from Bunkr.
 
-- Please do not abuse the service.
+- Please do not abuse their service.
 
 ## Prerequisites
 
@@ -11,11 +11,6 @@ Before running this project, ensure you have the following installed on your sys
 - **Python 3.x**
 - **Node.js**
 
-<<<<<<< HEAD
-To verify your installations:
-=======
-
-> > > > > > > a4c9c37 (better mgmt of deps using poetry)
 
 ```bash
 python3 --version
