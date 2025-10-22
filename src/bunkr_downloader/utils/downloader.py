@@ -6,15 +6,12 @@ import os
 def initiate_download(url, filename, album_id):
     download_dir = "Downloads"
     if len(album_id) > 0:
-        os.makedirs(download_dir, exist_ok=True)
         album_download_path = os.path.join(download_dir, album_id)
         os.makedirs(album_download_path, exist_ok=True)
         file_path = os.path.join(album_download_path, filename)
         if not os.path.exists(file_path):
             download_file_with_progress(url, file_path, filename)
-
     else:
-        download_dir = "Downloads"
         os.makedirs(download_dir, exist_ok=True)
         file_path = os.path.join(download_dir, filename)
         if not os.path.exists(file_path):
@@ -40,6 +37,6 @@ def download_file_with_progress(url, download_path, filename):
                 progress_bar.update(len(data))
                 file.write(data)
         progress_bar.close()
-        print(f"Downloaded '{filename}' from '{url}'")
+        print(f"Downloaded '{filename}'")
     except:
         print(f"Failed to Downloaded '{filename}' from '{url}'")
