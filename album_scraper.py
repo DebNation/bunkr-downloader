@@ -27,7 +27,9 @@ def album_scraper(url):
         print("Loading...Hold..on..")
         finalUrlsArr = []
         for page in range(pageCount):
+            print("page:", page)
             response = requests.get(url + f"?page={page}")
+            print("response:", response)
             if response.status_code != 200:
                 print("Failed to scrape album")
                 return
