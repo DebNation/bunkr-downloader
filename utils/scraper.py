@@ -9,7 +9,7 @@ import cloudscraper
 # -------------------------------------------------------------------
 # Create Cloudflare-bypassing scraper
 # -------------------------------------------------------------------
-scraper = cloudscraper.create_scraper(interpreter="js2py", delay=5, debug=True)
+scraper = cloudscraper.create_scraper(interpreter="js2py", delay=5, debug=False)
 
 
 # -------------------------------------------------------------------
@@ -53,7 +53,7 @@ def get_final_url(url: str) -> dict | None:
     try:
         slug = url.rstrip("/").split("/")[-1]
         response = scraper.post(
-            "https://bunkr.cr/api/vs",
+            "https://bunkr.pk/api/vs",
             json={"slug": slug},
             headers={"Referer": url},
         )
@@ -69,8 +69,10 @@ def get_final_url(url: str) -> dict | None:
 # Main workflow (same as your JS main())
 # -------------------------------------------------------------------
 def url_scraper(url: str) -> tuple[str, str]:
+    host = url.split("/a/")[0]
     # 1. Call Bunkr API
     api = get_final_url(url)
+    print(api)
     if not api:
         raise RuntimeError(f"Failed to get API response for URL: {url}")
 
@@ -93,4 +95,4 @@ def url_scraper(url: str) -> tuple[str, str]:
         raise RuntimeError(f"Failed to extract page title from: {url}")
 
     # 4. Build download link
-    return f"{final_url}?n={title}", title
+    return f"{host}{final_url}?n={title}", title

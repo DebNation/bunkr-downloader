@@ -5,7 +5,7 @@ import os
 
 def initiate_download(url, filename, album_id):
     download_dir = "Downloads"
-    if len(album_id) > 0:
+    if album_id:
         album_download_path = os.path.join(download_dir, album_id)
         os.makedirs(album_download_path, exist_ok=True)
         file_path = os.path.join(album_download_path, filename)
