@@ -9,7 +9,7 @@ import cloudscraper
 # -------------------------------------------------------------------
 # Create Cloudflare-bypassing scraper
 # -------------------------------------------------------------------
-scraper = cloudscraper.create_scraper(interpreter="js2py", delay=5, debug=True)
+scraper = cloudscraper.create_scraper(interpreter="js2py", delay=5, debug=False)
 
 
 # -------------------------------------------------------------------
